@@ -136,10 +136,10 @@
         // on ios safari, when navToggle is clicked,
         // this function executes too, so if the target
         // is the toggle button, exit this function
-        if (event.target.matches('a[href="#nav"]')) {
-            return
-        }
-        if ($stats && event.target.matches('a[href="#stats"]')) {
+        var isSafariLinkClick = event.target.matches('a[href="#nav"]')
+        var isStatskClicked = $stats && event.target.matches('a[href="#stats"]')
+        var isSelect2OptionClicked = $(event.target).closest('.select2-container.select2-container--open').length > 0
+        if (isSafariLinkClick || isStatskClicked || isSelect2OptionClicked) {
             return
         }
         $nav.classList.remove('visible')
