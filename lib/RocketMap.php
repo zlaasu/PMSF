@@ -344,19 +344,19 @@ class RocketMap extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
 
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone('UTC'));
+        $date->setTimestamp($tstamp);
+        $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         if ($oSwLat != 0) {
-            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
+            $conds[] = "(NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng) OR last_modified > :lastUpdated)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
         if ($tstamp > 0) {
-            $date = new \DateTime();
-            $date->setTimezone(new \DateTimeZone('UTC'));
-            $date->setTimestamp($tstamp);
             $conds[] = "last_scanned > :lastUpdated";
-            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
         return $this->query_gyms($conds, $params);
