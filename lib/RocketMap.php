@@ -111,12 +111,9 @@ class RocketMap extends Scanner
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
-<<<<<<< HEAD
-=======
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
             $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
 
->>>>>>> aff907b6e4600c157c259e699f182029f274fa23
             $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
