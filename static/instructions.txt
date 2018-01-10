@@ -1,0 +1,5 @@
+Please unzip these sprites and folder in `/static/`
+
+In your config file you can change `$copyrightSafe = false;` if you want to want to load your map with original pokemon icons. 
+If you want your map to keep loading with copyright safe icons but want to be able for your users to get pokemon icons you should leave `$copyrightSafe = true;` and your users should execute this JS script on your map (in console or 3rd party extension): 
+`javascript:(function($) { Store.set('spritefile', 'static/icons-im-1.png'); Store.set('spritefileLarge', 'static/icons-im-1-bigger.png'); Store.set('icons', 'static/icons-pokemon/');})($)`
