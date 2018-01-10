@@ -12,7 +12,7 @@ class RocketMap extends Scanner
         $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
@@ -60,7 +60,7 @@ class RocketMap extends Scanner
         $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time AND pokemon_id IN ( :ids )";
@@ -111,6 +111,12 @@ class RocketMap extends Scanner
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+<<<<<<< HEAD
+=======
+            $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
+            $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+
+>>>>>>> aff907b6e4600c157c259e699f182029f274fa23
             $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
@@ -214,7 +220,7 @@ class RocketMap extends Scanner
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
             $date->setTimestamp($tstamp);
-            $conds[] = "last_scanned > :lastUpdated";
+            $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
@@ -355,7 +361,7 @@ class RocketMap extends Scanner
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
             $date->setTimestamp($tstamp);
-            $conds[] = "last_scanned > :lastUpdated";
+            $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
@@ -372,7 +378,13 @@ class RocketMap extends Scanner
 
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
-        $gym["pokemon"] = $this->query_gym_defenders($gymId);
+
+        $select = "gymmember.gym_id, pokemon_id, cp AS pokemon_cp, move_1, move_2, iv_attack, iv_defense, iv_stamina";
+        global $noTrainerName;
+        if (!$noTrainerName) {
+            $select .= ", trainer_name, level AS trainer_level";
+        }
+        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -439,21 +451,12 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    private function query_gym_defenders($gymId)
+    private function query_gym_defenders($gymId, $select)
     {
         global $db;
 
 
-        $query = "SELECT gymmember.gym_id, 
-        pokemon_id, 
-        cp AS pokemon_cp, 
-        trainer_name, 
-        level AS trainer_level, 
-        move_1, 
-        move_2, 
-        iv_attack, 
-        iv_defense, 
-        iv_stamina 
+        $query = "SELECT :select 
         FROM gymmember 
         JOIN gympokemon 
         ON gymmember.pokemon_uid = gympokemon.pokemon_uid 
@@ -466,6 +469,7 @@ class RocketMap extends Scanner
         GROUP BY name 
         ORDER BY gympokemon.cp DESC";
 
+        $query = str_replace(":select", $select, $query);
         $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
