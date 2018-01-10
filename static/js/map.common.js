@@ -869,6 +869,11 @@ var StoreOptions = {
             default: notifyIv,
             type: StoreTypes.Number
         },
+    'remember_text_level_notify':
+        {
+            default: notifyLevel,
+            type: StoreTypes.Number
+        },
     'remember_raid_notify':
         {
             default: notifyRaid,
@@ -1130,6 +1135,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     if (isBounceDisabled === true) {
         animationDisabled = true
     }
+    console.log(item)
 
     return new google.maps.Marker({
         position: {

@@ -89,6 +89,7 @@ $noGyms = false;                                                    // true/fals
 $enableGyms = 'false';                                              // true/false
 $noGymSidebar = false;                                              // true/false
 $gymSidebar = 'true';                                               // true/false
+$noTrainerName = false;                                             // true/false
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
@@ -135,6 +136,9 @@ $notifyRarity = '[]';                                               // "Common",
 
 $noNotifyIv = false;                                                // true/false
 $notifyIv = '""';                                                   // "" for empty or a number
+
+$noNotifyLevel = false;                                                // true/false
+$notifyLevel = '""';                                                   // "" for empty or a number
 
 $noNotifyRaid = false;                                              // true/false
 $notifyRaid = 5;                                                    // O to disable
