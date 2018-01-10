@@ -945,6 +945,10 @@ function customizePokemonMarker(marker, item, skipNotification) {
         }
     }
 
+	if (item['cp_multiplier'] != null && item['level'] == null) {
+		item['level'] = getPokemonLevel(item['cp_multiplier']);
+	}
+
     if (item['level'] != null) {
         var level = item['level']
         if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
