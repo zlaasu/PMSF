@@ -12,7 +12,7 @@ class RocketMap_Sloppy extends RocketMap
         $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier, weight, height";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
