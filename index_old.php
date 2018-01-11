@@ -438,4 +438,3 @@ if ($blockIframe) {
     var spriteFile = '<?php echo $copyrightSafe ? 'static/icons-safe-1.png' : 'static/icons-im-1.png' ?>';
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';</script><script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script><script src="static/dist/js/map.common.min.44fea71437ef4e2e.js"></script><script src="static/dist/js/map.min.2032adaa4361585c.js"></script><script src="static/dist/js/stats.min.c9ebe8431de14987.js"></script><script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script><script defer="defer" src="static/js/vendor/richmarker-compiled.js"></script></body></html>
-
