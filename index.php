@@ -4,6 +4,9 @@ $zoom = !empty($_GET['zoom']) ? $_GET['zoom'] : null;
 if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
     $startingLat = $_GET['lat'];
     $startingLng = $_GET['lon'];
+    $locationSet = 1;
+} else {
+    $locationSet = 0;
 }
 if ($blockIframe) {
     header('X-Frame-Options: DENY');
@@ -289,6 +292,16 @@ if ($blockIframe) {
             </div>';
             }
             ?> <?php
+            if (!$noNotifyLevel) {
+                echo '<div class="form-control">
+                <label for="notify-level">
+                    <h3>'.i8ln('Notify of Level').'</h3>
+                    <input id="notify-level" type="text" name="notify-level"
+                           placeholder="'.i8ln('Minimum level').'"/>
+                </label>
+            </div>';
+            }
+            ?> <?php
             if (!$noNotifyRaid) {
                 echo '<div class="form-control switch-container" id="notify-raid-wrapper">
                         <h3>Notify of Minimum Raid Level</h3>
@@ -382,10 +395,9 @@ if ($blockIframe) {
             if (!$noMapStyle || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
                 echo '</div>';
             }
-            ?>
-            <?php include_once 'partials/settings_presets.php'; ?>
-            </div><div><center><button class="settings" onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false"><i class="fa fa-refresh" aria-hidden="true"></i> Reset Settings</button></center></div><div><center><button class="settings" onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))"><i class="fa fa-upload" aria-hidden="true"></i> Export Settings</button></center></div><div><center><input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"> <button class="settings" onclick="document.getElementById('fileInput').click()"><i class="fa fa-download" aria-hidden="true"></i> Import Settings</button></center></div></nav><nav id="stats"><div class="switch-container"><div class="switch-container"><center><h1 id="stats-ldg-label">Loading...</h1></center></div><div class="stats-label-container"><center><h1 id="stats-pkmn-label"></h1></center></div><div id="pokemonList" style="color: black;"><table id="pokemonList_table" class="display" cellspacing="0" width="100%"><thead><tr><th>Icon</th><th>Name</th><th>Count</th><th>%</th></tr></thead><tbody></tbody></table><div id="pokeStatStatus" style="color: black;"></div></div><div class="stats-label-container"><center><h1 id="stats-gym-label"></h1></center></div><div id="arenaList" style="color: black;"></div><div class="stats-label-container"><center><h1 id="stats-pkstop-label"></h1></center></div><div id="pokestopList" style="color: black;"></div></div></nav><nav id="gym-details"><center><h1>Loading...</h1></center></nav><div id="motd" title=""></div><div id="map"></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script><script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script><script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script><script src="node_modules/push.js/bin/push.min.js"></script><script src="static/dist/js/app.min.a8f67fb62a5d737f.js"></script><script src="static/js/vendor/classie.js"></script><script>var centerLat = <?= $startingLat; ?>;
+            ?> </div><div><center><button class="settings" onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false"><i class="fa fa-refresh" aria-hidden="true"></i> Reset Settings</button></center></div><div><center><button class="settings" onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))"><i class="fa fa-upload" aria-hidden="true"></i> Export Settings</button></center></div><div><center><input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"> <button class="settings" onclick="document.getElementById('fileInput').click()"><i class="fa fa-download" aria-hidden="true"></i> Import Settings</button></center></div></nav><nav id="stats"><div class="switch-container"><div class="switch-container"><center><h1 id="stats-ldg-label">Loading...</h1></center></div><div class="stats-label-container"><center><h1 id="stats-pkmn-label"></h1></center></div><div id="pokemonList" style="color: black;"><table id="pokemonList_table" class="display" cellspacing="0" width="100%"><thead><tr><th>Icon</th><th>Name</th><th>Count</th><th>%</th></tr></thead><tbody></tbody></table><div id="pokeStatStatus" style="color: black;"></div></div><div class="stats-label-container"><center><h1 id="stats-gym-label"></h1></center></div><div id="arenaList" style="color: black;"></div><div class="stats-label-container"><center><h1 id="stats-pkstop-label"></h1></center></div><div id="pokestopList" style="color: black;"></div></div></nav><nav id="gym-details"><center><h1>Loading...</h1></center></nav><div id="motd" title=""></div><div id="map"></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script><script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script><script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script><script src="node_modules/push.js/bin/push.min.js"></script><script src="static/dist/js/app.min.3c748b763f435420.js"></script><script src="static/js/vendor/classie.js"></script><script>var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
+    var locationSet = <?= $locationSet; ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
@@ -396,6 +408,7 @@ if ($blockIframe) {
     var notifyPokemon = <?php echo $noNotifyPokemon ? '[]' : $notifyPokemon ?>;
     var notifyRarity = <?php echo $noNotifyRarity ? '[]' : $notifyRarity ?>;
     var notifyIv = <?php echo $noNotifyIv ? '""' : $notifyIv ?>;
+    var notifyLevel = <?php echo $noNotifyLevel ? '""' : $notifyLevel ?>;
     var notifyRaid = <?php echo $noNotifyRaid ? 0 : $notifyRaid ?>;
     var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
     var activeRaids = <?php echo $activeRaids ?>;
@@ -420,4 +433,4 @@ if ($blockIframe) {
     var gymStyle = '<?php echo $gymStyle ?>';
     var spriteFile = '<?php echo $copyrightSafe ? 'static/icons-safe-1.png' : 'static/icons-im-1.png' ?>';
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
-    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';</script><script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script><script src="static/dist/js/map.common.min.be67964f875d91d9.js"></script><script src="static/dist/js/map.min.4fc2aca237d967ea.js"></script><script src="static/dist/js/stats.min.1fd144725f770765.js"></script><script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script><script defer="defer" src="static/js/vendor/richmarker-compiled.js"></script></body></html>
+    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';</script><script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script><script src="static/dist/js/map.common.min.44fea71437ef4e2e.js"></script><script src="static/dist/js/map.min.2032adaa4361585c.js"></script><script src="static/dist/js/stats.min.c9ebe8431de14987.js"></script><script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script><script defer="defer" src="static/js/vendor/richmarker-compiled.js"></script></body></html>
