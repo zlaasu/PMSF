@@ -839,35 +839,49 @@ function customizePokemonMarker(marker, item, skipNotification) {
         }
     }
 
-    if (item['individual_attack'] != null) {
-        var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
-        if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
-            if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
-            }
-            if (marker.animationDisabled !== true) {
-                marker.setAnimation(google.maps.Animation.BOUNCE)
-            }
-        }
-    }
-
 	if (item['cp_multiplier'] != null && item['level'] == null) {
 		item['level'] = getPokemonLevel(item['cp_multiplier']);
 	}
 
-    if (item['level'] != null) {
-        var level = item['level']
-        if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
-            if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
-            }
-            if (marker.animationDisabled !== true) {
-                marker.setAnimation(google.maps.Animation.BOUNCE)
-            }
-        }
-    }
+	if (item['level'] != null && item['individual_attack'] != null && notifiedMinPerfection > 0 && notifiedMinLevel > 0) {
+		var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina']);
+		var level = item['level'];
+		if (perfection >= notifiedMinPerfection && level >= notifiedMinLevel) {
+			if (!skipNotification) {
+				checkAndCreateSound(item['pokemon_id']);
+				sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+			}
+			if (marker.animationDisabled !== true) {
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+			}
+		}
+	} else {
+		if (item['individual_attack'] != null) {
+			var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina']);
+			if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
+				if (!skipNotification) {
+					checkAndCreateSound(item['pokemon_id']);
+					sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+				}
+				if (marker.animationDisabled !== true) {
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			}
+		}
+
+		if (item['level'] != null) {
+			var level = item['level'];
+			if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
+				if (!skipNotification) {
+					checkAndCreateSound(item['pokemon_id']);
+					sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+				}
+				if (marker.animationDisabled !== true) {
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			}
+		}
+	}
 
     addListeners(marker)
 }
