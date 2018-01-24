@@ -149,6 +149,9 @@ $notifySound = 'false';                                             // true/fals
 $noCriesSound = false;                                             // true/false
 $criesSound = 'false';                                             // true/false
 
+$noNotifyMagikarp = false;
+$notifyMagikarp = 'false';
+
 /* Style Settings */
 
 $copyrightSafe = true;

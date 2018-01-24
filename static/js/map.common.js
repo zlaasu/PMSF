@@ -964,6 +964,11 @@ var StoreOptions = {
             default: enableRanges,
             type: StoreTypes.Boolean
         },
+    'notifyMagikarp':
+        {
+            default: notifyMagikarp,
+            type: StoreTypes.Boolean
+        },
     'playSound':
         {
             default: notifySound,
