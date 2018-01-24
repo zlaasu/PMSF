@@ -322,6 +322,7 @@ function initSidebar() {
     $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
+    $('#magikarp-switch').prop('checked', Store.get('notifyMagikarp'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -839,37 +840,70 @@ function customizePokemonMarker(marker, item, skipNotification) {
         }
     }
 
-    if (item['individual_attack'] != null) {
-        var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
-        if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
-            if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
-            }
-            if (marker.animationDisabled !== true) {
-                marker.setAnimation(google.maps.Animation.BOUNCE)
-            }
-        }
-    }
-
 	if (item['cp_multiplier'] != null && item['level'] == null) {
 		item['level'] = getPokemonLevel(item['cp_multiplier']);
 	}
 
-    if (item['level'] != null) {
-        var level = item['level']
-        if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
-            if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
-            }
-            if (marker.animationDisabled !== true) {
-                marker.setAnimation(google.maps.Animation.BOUNCE)
-            }
-        }
-    }
+	if (item['level'] != null && item['individual_attack'] != null && notifiedMinPerfection > 0 && notifiedMinLevel > 0) {
+		var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina']);
+		var level = item['level'];
+		if (perfection >= notifiedMinPerfection && level >= notifiedMinLevel) {
+			if (!skipNotification) {
+				checkAndCreateSound(item['pokemon_id']);
+				sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+			}
+			if (marker.animationDisabled !== true) {
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+			}
+		}
+	} else {
+		if (item['individual_attack'] != null) {
+			var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina']);
+			if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
+				if (!skipNotification) {
+					checkAndCreateSound(item['pokemon_id']);
+					sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+				}
+				if (marker.animationDisabled !== true) {
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			}
+		}
+
+		if (item['level'] != null) {
+			var level = item['level'];
+			if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
+				if (!skipNotification) {
+					checkAndCreateSound(item['pokemon_id']);
+					sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+				}
+				if (marker.animationDisabled !== true) {
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			}
+		}
+	}
+
+	if (item['weight'] != null && item['height'] != null) {
+		if (item['pokemon_id'] == 129 && Store.get('notifyMagikarp')) {
+			//if (sizeRatio(item, 10, 0.89) > 2.5) {
+			if (item['weight'] >= 13.13) {
+				if (!skipNotification) {
+					checkAndCreateSound(item['pokemon_id']);
+					sendNotification("Big " + getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+				}
+				if (marker.animationDisabled !== true) {
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				}
+			}
+		}
+	}
 
     addListeners(marker)
+}
+
+function sizeRatio(item, baseWeight, baseHeight) {
+	return item['weight'] / baseWeight + item['height'] / baseHeight;
 }
 
 function getGymMarkerIcon(item) {
@@ -2744,6 +2778,10 @@ $(function () {
             wrapper.hide(options)
         }
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showPokestops').bind(this)()
+    })
+
+    $('#magikarp-switch').change(function () {
+        Store.set('notifyMagikarp', this.checked)
     })
 
     $('#sound-switch').change(function () {
