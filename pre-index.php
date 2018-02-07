@@ -498,8 +498,21 @@ if ($blockIframe) {
                         </select>
                     </div>';
             }
-            ?>
-            <?php
+            ?> <?php
+            if (!$noNotifyMagikarp) {
+                echo '<div class="form-control switch-container">
+                <h3>Notify big Magikarp</h3>
+                <div class="onoffswitch">
+                    <input id="magikarp-switch" type="checkbox" name="magikarp-switch" class="onoffswitch-checkbox"
+                           checked>
+                    <label class="onoffswitch-label" for="magikarp-switch">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+				</div>';
+            }
+            ?> <?php
             if (!$noNotifySound) {
                 echo '<div class="form-control switch-container">
                 <h3>Notify with sound</h3>
@@ -702,6 +715,7 @@ if ($blockIframe) {
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var notifySound = <?php echo $noNotifySound ? 'false' : $notifySound ?>;
     var criesSound = <?php echo $noCriesSound ? 'false' : $criesSound ?>;
+	var notifyMagikarp = <?php echo $noNotifyMagikarp ? 'false' : $notifyMagikarp ?>;
     var enableStartMe = <?php echo $noStartMe ? 'false' : $enableStartMe ?>;
     var enableStartLast = <?php echo (!$noStartLast && $enableStartMe === 'false') ? $enableStartLast : 'false' ?>;
     var enableFollowMe = <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>;
