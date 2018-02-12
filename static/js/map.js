@@ -2367,6 +2367,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         var raidStarted = result['raid_pokemon_id'] != null
 
         var raidStr = ''
+        var lastRaidStr = ''
         var raidIcon = ''
         if (raidSpawned && result.raid_end > Date.now()) {
             var levelStr = ''
@@ -2406,6 +2407,12 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 }
                 raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
             }
+        } else if (raidSpawned) {
+            var date = getDateStr(result['raid_start'])
+            var raidStartStr = getTimeStr(result['raid_start'])
+            var raidEndStr = getTimeStr(result['raid_end'])
+            lastRaidStr = '<center><i class="team-' + result.team_id + '-text">Last raid: ' + (result.raid_pokemon_name || '') + ", "
+                + date + " " + raidStartStr + " - " + raidEndStr + "</i></center>";
         }
 
         var pokemonHtml = ''
@@ -2538,7 +2545,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 '</center>'
         }
 
-        sidebar.innerHTML = headerHtml + pokemonHtml
+        sidebar.innerHTML = headerHtml + pokemonHtml + lastRaidStr
 
         sidebarClose = document.createElement('a')
         sidebarClose.href = '#'
