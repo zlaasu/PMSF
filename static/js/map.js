@@ -1911,6 +1911,7 @@ function updateMap() {
     // lets try and get the s2 cell id in the middle
     var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat(), position.lng(), 10))
     if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
+            destroyWeatherOverlay()
         loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
             var currentWeather = cellWeather.weather
             var currentCell = $('#currentWeather').data('current-cell')
@@ -1922,6 +1923,9 @@ function updateMap() {
                 $('#currentWeather').html('')
             }
         })
+        } else if (map.getZoom() <= 13 && $('#currentWeather').data('current-cell')) {
+            $('#currentWeather').data('current-cell', '')
+            updateWeatherOverlay()
     }
 
     loadRawData().done(function (result) {
@@ -1974,7 +1978,7 @@ function updateMap() {
 }
 
 function updateWeatherOverlay() {
-    if (Store.get('showWeather')) {
+    if (Store.get('showWeather') && !$('#currentWeather').data('current-cell')) {
         loadWeather().done(function (result) {
             if (weatherPolys.length === 0) {
                 drawWeatherOverlay(result.weather)
