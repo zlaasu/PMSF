@@ -2967,6 +2967,29 @@ $(function () {
         parent.find('input').val('').trigger('change')
     })
 
+    $('.toggle-gen').on('click', function(e) {
+        e.preventDefault()
+        var from = $(this).attr('from')
+        var to = $(this).attr('to')
+        $(this).toggleClass('clicked')
+        var select = $(this).closest('label').find('.pokemon-container input')
+        var value = select.val().split(',').filter(function (elem) {
+            return parseInt(elem, 10) < from || parseInt(elem, 10) > to
+        })
+        var arr = [];
+        for (var i = parseInt(from, 10); i <= parseInt(to, 10); ++i) {
+            arr.push(i)
+        }
+        var toggleClassesList = arr.map(function(e) { return ".pokemon-icon-sprite[data-value=" + e + "]" }).join(',')
+        if ($(this).hasClass('clicked')) {
+            $(this).closest('label').find('.pokemon-container .pokemon-list').find(toggleClassesList).addClass('active')
+            value = value.concat(arr)
+        } else {
+            $(this).closest('label').find('.pokemon-container .pokemon-list').find(toggleClassesList).removeClass('active')
+        }
+        select.val(value.join(',')).trigger('change')
+    })
+
     $raidNotify.select2({
         placeholder: 'Minimum raid level',
         minimumResultsForSearch: Infinity

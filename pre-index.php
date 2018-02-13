@@ -256,6 +256,9 @@ if ($blockIframe) {
                                             <a href="#" class="select-all"><?php echo i8ln('All') ?>
                                                 <div>
                                             </a><a href="#" class="hide-all"><?php echo i8ln('None') ?></a>
+                                            <a href="#" class="toggle-gen" from="1" to="151" style="width: 33%">I</a>
+                                            <a href="#" class="toggle-gen" from="152" to="251" style="width: 34%">II</a>
+                                            <a href="#" class="toggle-gen" from="252" to="386" style="width: 33%">III</a>
                                         </label>
                                     </div>
                                 </div>
