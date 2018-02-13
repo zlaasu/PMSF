@@ -110,6 +110,8 @@ var weatherPolys = []
 var weatherMarkers = []
 var weatherColors
 
+var toastrErrors = { "raw_data":[], "weather_data":[] }
+
 var S2
 
 /*
@@ -1476,7 +1478,7 @@ function loadRawData() {
         cache: false,
         beforeSend: function beforeSend() {
             if (maxLatLng > 0 && (((neLat - swLat) > maxLatLng) || ((neLng - swLng) > maxLatLng))) {
-                toastr['error'](i8ln('Please zoom in to get data.'), i8ln('Max zoom'))
+                toastrErrors.raw_data.push(toastr['error'](i8ln('Please zoom in to get data.'), i8ln('Max zoom')))
                 toastr.options = {
                     'closeButton': true,
                     'debug': false,
@@ -1504,7 +1506,7 @@ function loadRawData() {
         },
         error: function error() {
             // Display error toast
-            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting data')
+            toastrErrors.raw_data.push(toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting data'))
             toastr.options = {
                 'closeButton': true,
                 'debug': false,
@@ -1538,7 +1540,7 @@ function loadWeather() {
         cache: false,
         error: function error() {
             // Display error toast
-            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting weather')
+            toastrErrors.weather_data.push(toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting weather'))
             toastr.options = {
                 'closeButton': true,
                 'debug': false,
@@ -1575,7 +1577,7 @@ function loadWeatherCellData(cell) {
         },
         error: function error() {
             // Display error toast
-            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting weather')
+            toastrErrors.weather_data.push(toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting weather'))
             toastr.options = {
                 'closeButton': true,
                 'debug': false,
@@ -1910,6 +1912,10 @@ function updateMap() {
         if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
             destroyWeatherOverlay()
             loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
+                var t
+                while (t = toastrErrors.weather_data.shift()) {
+                    toastr.clear(t)
+                }
                 var currentWeather = cellWeather.weather
                 var currentCell = $('#currentWeather').data('current-cell')
                 if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
@@ -1927,6 +1933,10 @@ function updateMap() {
     }
 
     loadRawData().done(function (result) {
+        var t
+        while (t = toastrErrors.raw_data.shift()) {
+            toastr.clear(t)
+        }
         $.each(result.pokemons, processPokemons)
         $.each(result.pokestops, processPokestops)
         $.each(result.gyms, processGyms)
@@ -1978,6 +1988,10 @@ function updateMap() {
 function updateWeatherOverlay() {
     if (Store.get('showWeather') && !$('#currentWeather').data('current-cell')) {
         loadWeather().done(function (result) {
+            var t
+            while (t = toastrErrors.weather_data.shift()) {
+                toastr.clear(t)
+            }
             if (weatherPolys.length === 0) {
                 drawWeatherOverlay(result.weather)
             } else {
