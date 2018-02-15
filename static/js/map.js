@@ -919,6 +919,7 @@ function getNotifyText(item) {
 }
 
 function customizePokemonMarker(marker, item, skipNotification) {
+    var pokemonToBeNotified = false;
     marker.addListener('click', function () {
         this.setAnimation(null)
         this.animationDisabled = true
@@ -933,57 +934,43 @@ function customizePokemonMarker(marker, item, skipNotification) {
         disableAutoPan: true
     })
 
-    if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
-        if (!skipNotification) {
-            checkAndCreateSound(item['pokemon_id'])
-            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
-        }
-        if (marker.animationDisabled !== true) {
-            marker.setAnimation(google.maps.Animation.BOUNCE)
-        }
-    }
-
     if (item['cp_multiplier'] != null && item['level'] == null) {
         item['level'] = getPokemonLevel(item['cp_multiplier']);
     }
 
-    if (item['level'] != null && item['individual_attack'] != null && notifiedMinPerfection > 0 && notifiedMinLevel > 0) {
+    if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
+        pokemonToBeNotified = true;
+    } else if (item['level'] != null && item['individual_attack'] != null && notifiedMinPerfection > 0 && notifiedMinLevel > 0) {
         var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina']);
         var level = item['level'];
         if (perfection >= notifiedMinPerfection && level >= notifiedMinLevel) {
-            if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id']);
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
-            }
-            if (marker.animationDisabled !== true) {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-            }
+            pokemonToBeNotified = true;
         }
     } else {
         if (item['individual_attack'] != null) {
             var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina']);
             if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
-                if (!skipNotification) {
-                    checkAndCreateSound(item['pokemon_id']);
-                    sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
-                }
-                if (marker.animationDisabled !== true) {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                }
+                pokemonToBeNotified = true;
             }
         }
 
         if (item['level'] != null) {
             var level = item['level'];
             if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
-                if (!skipNotification) {
-                    checkAndCreateSound(item['pokemon_id']);
-                    sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
-                }
-                if (marker.animationDisabled !== true) {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                }
+                pokemonToBeNotified = true;
             }
+        }
+    }
+
+    if (pokemonToBeNotified) {
+        // Default marker has index 9999
+        marker.setZIndex(10000);
+        if (!skipNotification) {
+            checkAndCreateSound(item['pokemon_id']);
+            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude']);
+        }
+        if (marker.animationDisabled !== true) {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
         }
     }
 
