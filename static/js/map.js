@@ -629,7 +629,7 @@ function gymLabel(item) {
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
 
         if (raidStarted) {
-            raidIcon = '<i class="pokemon-sprite-large n' + item.raid_pokemon_id + '"></i>'
+            raidIcon = '<i class="pokemon-sprite n' + item.raid_pokemon_id + '"></i>'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -652,7 +652,7 @@ function gymLabel(item) {
     for (i = 0; i < members.length; i++) {
         memberStr +=
             '<span class="gym-member" title="' + members[i].pokemon_name + ' | ' + members[i].trainer_name + ' (Lvl ' + members[i].trainer_level + ')">' +
-            '<i class="pokemon-sprite n' + members[i].pokemon_id + '"></i>' +
+            '<i class="pokemon-raid-sprite n' + members[i].pokemon_id + '" style="display: inline-block;position: relative;top: 6px; right: 0px;"></i>' +
             '<span class="cp team-' + teamId + '">' + members[i].pokemon_cp + '</span>' +
             '</span>'
     }
@@ -2396,7 +2396,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_end'] + '" end>(00m00s)</span></div>'
 
             if (raidStarted) {
-                raidIcon = '<i class="pokemon-sprite-large n' + result.raid_pokemon_id + '"></i>'
+                raidIcon = '<i class="pokemon-sprite n' + result.raid_pokemon_id + '"></i>'
             } else {
                 var raidEgg = ''
                 if (result['raid_level'] <= 2) {
@@ -2449,7 +2449,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 pokemonHtml +=
                     '<tr onclick=toggleGymPokemonDetails(this)>' +
                     '<td width="30px">' +
-                    '<i class="pokemon-sprite n' + pokemon.pokemon_id + '"></i>' +
+                    '<i class="pokemon-raid-sprite n' + pokemon.pokemon_id + '" style="display: inline-block;position: relative;top: 6px; right: 0px;"></i>' +
                     '</td>' +
                     '<td class="team-' + result.team_id + '-text">' +
                     '<div style="line-height:1em">' + pokemon.pokemon_name + '</div>' +
@@ -2538,7 +2538,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             pokemonHtml =
                 '<center class="team-' + result.team_id + '-text">' +
                 'Gym Leader:<br>' +
-                '<i class="pokemon-sprite-large n' + result.guard_pokemon_id + '"></i><br>' +
+                '<i class="pokemon-sprite n' + result.guard_pokemon_id + '"></i><br>' +
                 '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
                 '<p style="font-size: .75em margin: 5px">' +
                 'No additional gym information is available for this gym. Make sure you are collecting detailed gym info. If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.' +
