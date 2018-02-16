@@ -1089,6 +1089,11 @@ var StoreOptions = {
             default: 16,
             type: StoreTypes.Number
         },
+    'spritefile':
+        {
+            default: spriteFile,
+            type: StoreTypes.String
+        },
     'spritefileLarge':
         {
             default: spriteFileLarge,

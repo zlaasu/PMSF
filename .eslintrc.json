@@ -106,6 +106,7 @@
     "iconNotifySizeModifier": true,
     "locationStyle": true,
     "gymStyle": true,
+    "spriteFile": true,
     "spriteFileLarge": true,
     "weatherSpritesSrc": true,
     "icons": true,
