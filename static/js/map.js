@@ -3403,7 +3403,7 @@ $(function () {
 function download(filename, text) { // eslint-disable-line no-unused-vars
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
-    element.setAttribute('download', filename + '_' + moment().format('DD-MM-YYYY HH:mm'))
+    element.setAttribute('download', filename + '_' + moment().format('DD_MM_YYYY_HH_mm') + ".txt")
 
     element.style.display = 'none'
     document.body.appendChild(element)
