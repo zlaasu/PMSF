@@ -45,6 +45,7 @@
     "centerLng": true,
     "locationSet": true,
     "zoom": true,
+    "encounterId": true,
     "minZoom": true,
     "maxLatLng": true,
     "showConfig": true,
@@ -68,13 +69,13 @@
     "pGoStyleNight": true,
     "moment": false,
     "mapStyle": true,
-    "directionProvider" : true,
+    "directionProvider": true,
     "hidePokemon": true,
     "excludeMinIV": true,
     "minIV": true,
     "minLevel": true,
-    "showBigKarp":true,
-    "showTinyRat":true,
+    "showBigKarp": true,
+    "showTinyRat": true,
     "hidePokemonCoords": true,
     "notifyPokemon": true,
     "notifyRarity": true,
@@ -105,6 +106,7 @@
     "iconNotifySizeModifier": true,
     "locationStyle": true,
     "gymStyle": true,
+    "spriteFile": true,
     "spriteFileLarge": true,
     "weatherSpritesSrc": true,
     "icons": true,
@@ -113,6 +115,8 @@
     "triggerGyms": true,
     "i8ln": false,
     "languageSite": true,
-    "boostedMons": true
+    "boostedMons": true,
+    "exEligible": true,
+    "motd": true
   }
 }
